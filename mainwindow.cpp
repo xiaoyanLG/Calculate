@@ -18,12 +18,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->treeView->header()->setStretchLastSection(false);
 
     connect(thread, SIGNAL(addString(QString,QString)), this, SLOT(addString(QString,QString)));
-    connect(thread, SIGNAL(addSameString(QString)), this, SLOT(addSameString(QString)));
-    connect(thread, SIGNAL(update()), ui->treeView, SLOT(reset()));
-    connect(thread, SIGNAL(update()), this, SLOT(setColumnWidth()));
+    connect(thread, SIGNAL(updateTree()), ui->treeView, SLOT(reset()));
+    connect(thread, SIGNAL(updateList(QStringList, bool)), this, SLOT(updateListView(QStringList, bool)));
+    connect(thread, SIGNAL(updateTree()), this, SLOT(setColumnWidth()));
+    connect(thread, SIGNAL(finished()), this, SLOT(threadFinished()));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(showTreeCurrentRow(QModelIndex)));
-    connect(ui->listWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(showListCurrentRow(QModelIndex)));
+    connect(ui->listView, SIGNAL(clicked(QModelIndex)), this, SLOT(showListCurrentRow(QModelIndex)));
     ui->treeView->setModel(new XYTreeModel);
+    listModel = new QStringListModel;
+    ui->listView->setModel(listModel);
 }
 
 MainWindow::~MainWindow()
@@ -34,11 +37,6 @@ MainWindow::~MainWindow()
 void MainWindow::addString(const QString &one, const QString &userData)
 {
     XYTreeModel::getInstance()->appendColumnData(curColumn, one, userData);
-}
-
-void MainWindow::addSameString(const QString &sameText)
-{
-    ui->listWidget->addItem(sameText);
 }
 
 void MainWindow::showTreeCurrentRow(const QModelIndex &index)
@@ -62,8 +60,40 @@ void MainWindow::setColumnWidth()
     }
 }
 
+void MainWindow::updateListView(QStringList datas, bool all)
+{
+    listModel->setStringList(datas);
+    if (all)
+    {
+        allSameItems = datas;
+    }
+}
+
+void MainWindow::threadFinished()
+{
+    switch (thread->getStartType())
+    {
+    case XYCalculateThread::FINDRESULTS:
+        ui->label_7->setText(QString("%1").arg(QStringLiteral("计算完成！")));
+        break;
+    case XYCalculateThread::FINDSAME:
+        ui->label_8->setText(QString("%1").arg(QStringLiteral("查找相同列完成！")));
+        break;
+    case XYCalculateThread::FINDWITHKEY:
+        ui->label_8->setText(QString("%1").arg(QStringLiteral("筛选完成！")));
+        break;
+    default:
+        break;
+    }
+}
+
 void MainWindow::on_pushButton_clicked()
 {
+    if (thread->isRunning())
+    {
+        QMessageBox::information(this, QStringLiteral("别着急"), QStringLiteral("正在计算，稍等一会。。。"));
+        return;
+    }
     int result = ui->lineEdit_4->text().toInt();
     int maxValue = ui->lineEdit->text().toInt();
     bool include3 = ui->checkBox->isChecked();
@@ -79,6 +109,7 @@ void MainWindow::on_pushButton_clicked()
                                               .arg(maxValue), QStringList(), QStringList());
         ui->treeView->setColumnWidth(curColumn, 150);
         thread->start(include3, include4, include5, include6, result, maxValue);
+        ui->label_7->clear();
     }
 }
 
@@ -87,17 +118,54 @@ void MainWindow::on_pushButton_2_clicked()
     XYTreeModel::getInstance()->clear();
     ui->treeView->reset();
     ui->label_5->clear();
+    ui->label_7->clear();
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
+    if (thread->isRunning())
+    {
+        QMessageBox::information(this, QStringLiteral("别着急"), QStringLiteral("正在计算，稍等一会。。。"));
+        return;
+    }
     int setTimes = ui->lineEdit_2->text().toInt();
 
     thread->start(XYTreeModel::getInstance(), setTimes);
+
+    ui->label_8->clear();
 }
 
 void MainWindow::on_pushButton_5_clicked()
 {
-    ui->listWidget->clear();
+    listModel->setStringList(QStringList());
+    listModel->revert();
     ui->label_6->clear();
+    ui->label_8->clear();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    if (thread->isRunning())
+    {
+        QMessageBox::information(this, QStringLiteral("别着急"), QStringLiteral("正在计算，稍等一会。。。"));
+        return;
+    }
+    QStringList currentItems = listModel->stringList();
+    QString key = ui->lineEdit_3->text();
+    QStringList keys = key.split(" ", QString::SkipEmptyParts);
+    if (ui->radioButton->isChecked())
+    {
+        thread->start(true, keys, currentItems);
+    }
+    else if (ui->radioButton_2->isChecked())
+    {
+        thread->start(false, keys, currentItems);
+    }
+    ui->label_8->clear();
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    listModel->setStringList(allSameItems);
+    listModel->revert();
 }

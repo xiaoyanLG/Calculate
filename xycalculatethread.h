@@ -9,9 +9,10 @@ class XYCalculateThread : public QThread
 {
     Q_OBJECT
 public:
-    enum TYPE {FINDRESULTS, FINDSAME};
+    enum TYPE {FINDRESULTS, FINDSAME, FINDWITHKEY};
     explicit XYCalculateThread(QObject *parent = 0);
     ~XYCalculateThread();
+    TYPE getStartType();
     void start(bool include3,
                bool include4,
                bool include5,
@@ -19,13 +20,15 @@ public:
                int resultValue,
                int maxValue);
     void start(XYTreeModel *tree, int colums);
+    void start(bool include, const QStringList &keys, const QStringList &all);
     void isOKGroup(const QList<int> &values);
     void calculateTwoNumbers(int a, int b, QString &text, const QList<int> &values, int index);
 
 signals:
     void addString(const QString &oneResult, const QString &userData);
     void addSameString(const QString &sameText);
-    void update();
+    void updateTree();
+    void updateList(QStringList datas, bool all);
 
 protected:
     void run();
@@ -33,6 +36,7 @@ protected:
 private:
     void findResultes();
     void findTreeSameColumns();
+    void findKeys();
     bool findColumnSameItem(int column, const QString &data, QString &sameData);
 
 private:
@@ -48,6 +52,10 @@ private:
     XYTreeModel *tree;
     int columns;
     int okGroupNumbers;
+    QStringList allSameTexts;
+
+    bool include;
+    QStringList keys;
 };
 
 #endif // XYCALCULATETHREAD_H

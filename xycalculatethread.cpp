@@ -61,11 +61,27 @@ void XYCalculateThread::start(bool include3,
     QThread::start();
 }
 
+XYCalculateThread::TYPE XYCalculateThread::getStartType()
+{
+    return type;
+}
+
 void XYCalculateThread::start(XYTreeModel *tree, int colums)
 {
     type = FINDSAME;
+    this->allSameTexts.clear();
     this->tree = tree;
     this->columns = colums;
+
+    QThread::start();
+}
+
+void XYCalculateThread::start(bool include, const QStringList &keys, const QStringList &all)
+{
+    type = FINDWITHKEY;
+    this->include = include;
+    this->keys = keys;
+    this->allSameTexts = all;
 
     QThread::start();
 }
@@ -109,7 +125,7 @@ void XYCalculateThread::calculateTwoNumbers(int a, int b, QString &text, const Q
                 okGroupNumbers++;
                 if (okGroupNumbers % 5000 == 0)
                 {
-                    emit update();
+                    emit updateTree();
                 }
             }
         }
@@ -146,6 +162,9 @@ void XYCalculateThread::run()
         break;
     case FINDSAME:
         findTreeSameColumns();
+        break;
+    case FINDWITHKEY:
+        findKeys();
         break;
     default:
         break;
@@ -220,7 +239,7 @@ void XYCalculateThread::findResultes()
             }
         }
     }
-    emit update();
+    emit updateTree();
 }
 
 void XYCalculateThread::findTreeSameColumns()
@@ -236,7 +255,7 @@ void XYCalculateThread::findTreeSameColumns()
 
     QStringList &allDatas = tree->getColumnDatas(0);
     QStringList &allUserDatas = tree->getColumnUserDatas(0);
-
+    allSameTexts.clear();
     for (int i = 0; i < rowcount; ++i)
     {
         QString firstText;
@@ -254,7 +273,11 @@ void XYCalculateThread::findTreeSameColumns()
             if (!allSames.contains(firstData) && !firstData.isEmpty())
             {
                 allSames.append(firstData);
-                emit addSameString(firstData);
+                allSameTexts.append(firstData);
+                if (allSameTexts.size() % 1000 == 0)
+                {
+                    emit updateList(allSameTexts, false);
+                }
             }
         }
         else
@@ -275,11 +298,83 @@ void XYCalculateThread::findTreeSameColumns()
                 if (!allSames.contains(firstData))
                 {
                     allSames.append(firstData);
-                    emit addSameString(addText + QString("    \t(%1)").arg(firstData));
+                    allSameTexts.append(addText + QString("    \t( %1 )").arg(firstData));
+                    if (allSameTexts.size() % 1000 == 0)
+                    {
+                        emit updateList(allSameTexts, false);
+                    }
                 }
             }
         }
     }
+    emit updateList(allSameTexts, true);
+}
+
+void XYCalculateThread::findKeys()
+{
+    QStringList findItems;
+    if (include)
+    {
+        QStringList currentItems = allSameTexts;
+        QStringList keys = this->keys;
+
+        for (int i = 0; i < currentItems.size(); ++i)
+        {
+            QString value = currentItems.at(i);
+            int index = value.lastIndexOf("(");
+            value = value.mid( index == -1 ? 0:index);
+            QStringList values = value.split(" ", QString::SkipEmptyParts);
+            bool contain = true;
+            for (int j = 0; j < keys.size(); ++j)
+            {
+                if (!values.contains(keys.at(j)))
+                {
+                    contain = false;
+                    break;
+                }
+            }
+            if (contain)
+            {
+                findItems.append(currentItems.at(i));
+                if (findItems.size() % 1000 == 0)
+                {
+                    emit updateList(findItems, false);
+                }
+            }
+        }
+    }
+    else
+    {
+        QStringList currentItems = allSameTexts;
+        QStringList keys = this->keys;
+
+        for (int i = 0; i < currentItems.size(); ++i)
+        {
+            QString value = currentItems.at(i);
+            int index = value.lastIndexOf("(");
+            value = value.mid( index == -1 ? 0:index);
+            QStringList values = value.split(" ", QString::SkipEmptyParts);
+            int contain = 0;
+            for (int j = 0; j < keys.size(); ++j)
+            {
+                if (!values.contains(keys.at(j)))
+                {
+                    break;
+                }
+                contain++;
+            }
+            if (contain != keys.size())
+            {
+                findItems.append(currentItems.at(i));
+                if (findItems.size() % 1000 == 0)
+                {
+                    emit updateList(findItems, false);
+                }
+            }
+        }
+    }
+
+    emit updateList(findItems, false);
 }
 
 bool XYCalculateThread::findColumnSameItem(int column, const QString &data, QString &sameData)

@@ -19,10 +19,11 @@ public:
 
 public slots:
     void addString(const QString &one, const QString &userData);
-    void addSameString(const QString &sameText);
     void showTreeCurrentRow(const QModelIndex &index);
     void showListCurrentRow(const QModelIndex &index);
     void setColumnWidth();
+    void updateListView(QStringList datas, bool all);
+    void threadFinished();
 
 private slots:
     void on_pushButton_clicked();
@@ -32,6 +33,10 @@ private slots:
     void on_pushButton_4_clicked();
 
     void on_pushButton_5_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_6_clicked();
 
 private:
     void addOneColumn();
@@ -43,6 +48,7 @@ private:
 
     int curRow;
     int curColumn;
+    QStringList  allSameItems;
 };
 
 #endif // MAINWINDOW_H

@@ -17,21 +17,32 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="5" column="0" colspan="12">
-       <widget class="QListWidget" name="listWidget"/>
+      <item row="0" column="5" colspan="4">
+       <widget class="QCheckBox" name="checkBox_4">
+        <property name="text">
+         <string>6个数字</string>
+        </property>
+       </widget>
       </item>
-      <item row="6" column="3" colspan="9">
-       <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="3" column="0" colspan="14">
+       <widget class="QTreeView" name="treeView"/>
+      </item>
+      <item row="6" column="11">
+       <widget class="QLineEdit" name="lineEdit_3"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>4个数字</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>668</width>
-          <height>20</height>
-         </size>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>3个数字</string>
         </property>
-       </spacer>
+       </widget>
       </item>
       <item row="6" column="0" colspan="3">
        <widget class="QLabel" name="label_6">
@@ -40,25 +51,18 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="3" colspan="5">
-       <spacer name="horizontalSpacer_2">
+      <item row="2" column="10" colspan="2">
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>548</width>
+          <width>88</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="4" column="0" colspan="3">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
       </item>
       <item row="0" column="4">
        <widget class="QCheckBox" name="checkBox_3">
@@ -67,27 +71,68 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="5">
-       <widget class="QCheckBox" name="checkBox_4">
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>6个数字</string>
+         <string>结果：</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="6">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="2" column="12" colspan="2">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>计算从左到右，不按照四则运算顺序</string>
         </property>
-        <property name="sizeHint" stdset="0">
+       </widget>
+      </item>
+      <item row="0" column="13">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="maximumSize">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>100</width>
+          <height>16777215</height>
          </size>
         </property>
-       </spacer>
+        <property name="text">
+         <string>清空</string>
+        </property>
+       </widget>
       </item>
-      <item row="0" column="10">
+      <item row="6" column="3" colspan="6">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3" colspan="7">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="13">
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>清空</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="10">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>指定相同列数量：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="12">
        <widget class="QPushButton" name="pushButton">
         <property name="maximumSize">
          <size>
@@ -100,14 +145,31 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QLabel" name="label">
+      <item row="4" column="0" colspan="3">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>结果：</string>
+         <string/>
         </property>
        </widget>
       </item>
-      <item row="2" column="2" colspan="3">
+      <item row="6" column="13">
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="text">
+         <string>还原</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="10">
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="text">
+         <string>去掉并存</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="14">
+       <widget class="QListView" name="listView"/>
+      </item>
+      <item row="2" column="2" colspan="2">
        <widget class="QLineEdit" name="lineEdit_4">
         <property name="maximumSize">
          <size>
@@ -117,27 +179,24 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="5">
-       <widget class="QLabel" name="label_2">
+      <item row="6" column="9">
+       <widget class="QRadioButton" name="radioButton">
         <property name="text">
-         <string>最大值：</string>
+         <string>挑选包括</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="12">
-       <widget class="QTreeView" name="treeView"/>
-      </item>
-      <item row="4" column="8">
-       <widget class="QLabel" name="label_4">
+      <item row="6" column="12">
+       <widget class="QPushButton" name="pushButton_3">
         <property name="text">
-         <string>指定相同列数量：</string>
+         <string>查找</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="9">
-       <widget class="QLineEdit" name="lineEdit_2"/>
-      </item>
-      <item row="4" column="10">
+      <item row="4" column="12">
        <widget class="QPushButton" name="pushButton_4">
         <property name="maximumSize">
          <size>
@@ -151,72 +210,22 @@
        </widget>
       </item>
       <item row="4" column="11">
-       <widget class="QPushButton" name="pushButton_5">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
+       <widget class="QLineEdit" name="lineEdit_2"/>
+      </item>
+      <item row="2" column="4">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>清空</string>
+         <string>最大值：</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="checkBox">
-        <property name="text">
-         <string>3个数字</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" colspan="2">
-       <widget class="QCheckBox" name="checkBox_2">
-        <property name="text">
-         <string>4个数字</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="6">
+      <item row="2" column="5" colspan="5">
        <widget class="QLineEdit" name="lineEdit">
         <property name="maximumSize">
          <size>
           <width>100</width>
           <height>16777215</height>
          </size>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="11">
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>清空</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="8" colspan="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>88</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="10" colspan="2">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>计算从左到右，不按照四则运算顺序</string>
         </property>
        </widget>
       </item>
