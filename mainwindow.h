@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QStringListModel>
 
 namespace Ui {
 class MainWindow;
@@ -19,7 +20,9 @@ public:
 public slots:
     void addString(const QString &one, const QString &userData);
     void addSameString(const QString &sameText);
-    void showCurrentRow(const QModelIndex &index);
+    void showTreeCurrentRow(const QModelIndex &index);
+    void showListCurrentRow(const QModelIndex &index);
+    void setColumnWidth();
 
 private slots:
     void on_pushButton_clicked();
@@ -36,6 +39,7 @@ private:
 private:
     Ui::MainWindow *ui;
     XYCalculateThread *thread;
+    QStringListModel  *listModel;
 
     int curRow;
     int curColumn;

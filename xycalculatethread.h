@@ -3,6 +3,7 @@
 
 #include <QThread>
 #include <QTreeWidget>
+#include "xytreemodel.h"
 
 class XYCalculateThread : public QThread
 {
@@ -17,13 +18,14 @@ public:
                bool include6,
                int resultValue,
                int maxValue);
-    void start(QTreeWidget *tree, int colums);
+    void start(XYTreeModel *tree, int colums);
     void isOKGroup(const QList<int> &values);
     void calculateTwoNumbers(int a, int b, QString &text, const QList<int> &values, int index);
 
 signals:
     void addString(const QString &oneResult, const QString &userData);
     void addSameString(const QString &sameText);
+    void update();
 
 protected:
     void run();
@@ -43,8 +45,9 @@ private:
     int  maxValue;
     int  resultValue;
 
-    QTreeWidget *tree;
+    XYTreeModel *tree;
     int columns;
+    int okGroupNumbers;
 };
 
 #endif // XYCALCULATETHREAD_H

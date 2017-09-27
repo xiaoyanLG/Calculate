@@ -50,6 +50,7 @@ void XYCalculateThread::start(bool include3,
                               int maxValue)
 {
     type = FINDRESULTS;
+    this->okGroupNumbers = 0;
     this->include3 = include3;
     this->include4 = include4;
     this->include5 = include5;
@@ -60,7 +61,7 @@ void XYCalculateThread::start(bool include3,
     QThread::start();
 }
 
-void XYCalculateThread::start(QTreeWidget *tree, int colums)
+void XYCalculateThread::start(XYTreeModel *tree, int colums)
 {
     type = FINDSAME;
     this->tree = tree;
@@ -105,6 +106,11 @@ void XYCalculateThread::calculateTwoNumbers(int a, int b, QString &text, const Q
                                .arg(b)
                                .arg("=")
                                .arg(resultValue), userData);
+                okGroupNumbers++;
+                if (okGroupNumbers % 5000 == 0)
+                {
+                    emit update();
+                }
             }
         }
     }
@@ -205,18 +211,22 @@ void XYCalculateThread::findResultes()
             }
             else
             {
-                QList<int> tmp = values;
-                tmp.removeLast();
+                QList<int> tmp;
+                for (int i = 0; i < values.size() - 1; ++i)
+                {
+                    tmp.prepend(values.at(i));
+                }
                 isOKGroup(tmp);
             }
         }
     }
+    emit update();
 }
 
 void XYCalculateThread::findTreeSameColumns()
 {
     QStringList allSames;
-    int rowcount = tree->topLevelItemCount();
+    int rowcount = tree->rowCount();
     int columncount = tree->columnCount();
     int setTimes = columns;
     if (setTimes == 0)
@@ -224,14 +234,24 @@ void XYCalculateThread::findTreeSameColumns()
         setTimes = columncount;
     }
 
+    QStringList &allDatas = tree->getColumnDatas(0);
+    QStringList &allUserDatas = tree->getColumnUserDatas(0);
+
     for (int i = 0; i < rowcount; ++i)
     {
-        QTreeWidgetItem *item = tree->topLevelItem(i);
-        QString firstText = item->text(0);
-        QString firstData = item->data(0, Qt::UserRole).toString();
+        QString firstText;
+        if (i < allDatas.size())
+        {
+            firstText = allDatas.at(i);
+        }
+        QString firstData;
+        if (i < allUserDatas.size())
+        {
+            firstData = allUserDatas.at(i);
+        }
         if (columncount == 1)
         {
-            if (!allSames.contains(firstData))
+            if (!allSames.contains(firstData) && !firstData.isEmpty())
             {
                 allSames.append(firstData);
                 emit addSameString(firstData);
@@ -264,18 +284,20 @@ void XYCalculateThread::findTreeSameColumns()
 
 bool XYCalculateThread::findColumnSameItem(int column, const QString &data, QString &sameData)
 {
-    int rowcount = tree->topLevelItemCount();
+    QStringList &allUserDatas = tree->getColumnUserDatas(column);
+    QStringList &allDatas = tree->getColumnDatas(column);
+
+    int rowcount = allUserDatas.size();
     for (int i = 0; i < rowcount; ++i)
     {
-        QTreeWidgetItem *item = tree->topLevelItem(i);
-        QString userData = item->data(column, Qt::UserRole).toString();
+        QString userData = allUserDatas.at(i);
         if (userData.isEmpty())
         {
             break;
         }
         if (data == userData)
         {
-            sameData = item->text(column);
+            sameData = allDatas.at(i);
             return true;
         }
     }
