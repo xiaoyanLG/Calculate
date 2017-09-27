@@ -1,0 +1,58 @@
+#include "winres.h"
+
+#define MAJOR 3
+#define MINOR 3
+#define PATCH 3
+
+#define VERSION_STR "3.3.3.0"
+
+#define PRODUCT_ICON           "Calculate.ico" // 图标
+
+#define FILE_VERSION           MAJOR,MINOR,PATCH   // 文件版本
+#define FILE_VERSION_STR       VERSION_STR
+#define PRODUCT_VERSION        FILE_VERSION        // 产品版本
+#define PRODUCT_VERSION_STR    FILE_VERSION_STR
+#define COMPANY_NAME           "ACOINFO"
+#define INTERNAL_NAME          "TpsFs-Explorer.exe"
+#define FILE_DESCRIPTION       "TpsFs-Explorer"  // 文件说明
+#define LEGAL_COPYRIGHT        "Copyright(c) 2015-2017 ACOINFO(R). All rights reserved." // 版权
+#define ORIGINAL_FILE_NAME     "TpsFs-Explorer.exe"    // 原始文件名
+#define PRODUCT_NAME           "TpsFs-Explorer"        // 产品名称
+#define ORGANIZATION_DOMAIN    "www.acoinfo.com"  // 域名
+
+// 图标
+IDI_ICON1       ICON      PRODUCT_ICON
+
+// 版本信息
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION FILE_VERSION
+ PRODUCTVERSION PRODUCT_VERSION
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "CompanyName", COMPANY_NAME
+            VALUE "FileDescription", FILE_DESCRIPTION
+            VALUE "FileVersion", FILE_VERSION_STR
+            VALUE "InternalName", INTERNAL_NAME
+            VALUE "LegalCopyright", LEGAL_COPYRIGHT
+            VALUE "OriginalFilename", ORIGINAL_FILE_NAME
+            VALUE "ProductName", PRODUCT_NAME
+            VALUE "ProductVersion", PRODUCT_VERSION_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
