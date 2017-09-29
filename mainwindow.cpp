@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     curColumn = 1;
     ui->setupUi(this);
     ui->lineEdit->setValidator(new QIntValidator(0, 99));
+    ui->lineEdit_2->setValidator(new QIntValidator(0, 99));
     ui->lineEdit_4->setValidator(new QIntValidator(0, 99));
     ui->treeView->header()->setStretchLastSection(false);
 
@@ -100,16 +101,46 @@ void MainWindow::on_pushButton_clicked()
     bool include4 = ui->checkBox_2->isChecked();
     bool include5 = ui->checkBox_3->isChecked();
     bool include6 = ui->checkBox_4->isChecked();
+    bool includeBracket = ui->checkBox_5->isChecked();
+    bool user = ui->checkBox_6->isChecked();
 
-    if (!ui->lineEdit_4->text().isEmpty() && !ui->lineEdit->text().isEmpty())
+    if (user)
     {
-        curColumn = XYTreeModel::getInstance()->addColumn(QString("%1:%2   %3:%4").arg(QStringLiteral("结果"))
-                                              .arg(result)
-                                              .arg(QStringLiteral("最大值"))
-                                              .arg(maxValue), QStringList(), QStringList());
-        ui->treeView->setColumnWidth(curColumn, 150);
-        thread->start(include3, include4, include5, include6, result, maxValue);
-        ui->label_7->clear();
+        QString userValue = ui->lineEdit_5->text();
+        QStringList userValues = userValue.split(" ", QString::SkipEmptyParts);
+        QList<int > values;
+        bool ok = false;
+        for (int i = 0; i < userValues.size(); ++i)
+        {
+            int data = userValues.at(i).toInt(&ok);
+            if (ok)
+            {
+                values.append(data);
+            }
+        }
+        if (!values.isEmpty())
+        {
+            curColumn = XYTreeModel::getInstance()->addColumn(QString("%1:%2   %3:%4").arg(QStringLiteral("结果"))
+                                                  .arg(result)
+                                                  .arg(QStringLiteral("自定义"))
+                                                  .arg(userValue), QStringList(), QStringList());
+            ui->treeView->setColumnWidth(curColumn, 150);
+            thread->start(values, includeBracket, result);
+            ui->label_7->clear();
+        }
+    }
+    else
+    {
+        if (!ui->lineEdit_4->text().isEmpty() && !ui->lineEdit->text().isEmpty())
+        {
+            curColumn = XYTreeModel::getInstance()->addColumn(QString("%1:%2   %3:%4").arg(QStringLiteral("结果"))
+                                                  .arg(result)
+                                                  .arg(QStringLiteral("最大值"))
+                                                  .arg(maxValue), QStringList(), QStringList());
+            ui->treeView->setColumnWidth(curColumn, 150);
+            thread->start(include3, include4, include5, include6, includeBracket, result, maxValue);
+            ui->label_7->clear();
+        }
     }
 }
 

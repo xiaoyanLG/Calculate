@@ -229,6 +229,26 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="11">
+       <widget class="QCheckBox" name="checkBox_5">
+        <property name="text">
+         <string>包含括号</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="9">
+       <widget class="QCheckBox" name="checkBox_6">
+        <property name="text">
+         <string>自定义数字</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="10">
+       <widget class="QLineEdit" name="lineEdit_5"/>
+      </item>
      </layout>
     </item>
    </layout>

@@ -9,7 +9,7 @@ class XYCalculateThread : public QThread
 {
     Q_OBJECT
 public:
-    enum TYPE {FINDRESULTS, FINDSAME, FINDWITHKEY};
+    enum TYPE {FINDRESULTS, FINDSAME, FINDWITHKEY, FINDRESULTSWITHUSER};
     explicit XYCalculateThread(QObject *parent = 0);
     ~XYCalculateThread();
     TYPE getStartType();
@@ -17,12 +17,20 @@ public:
                bool include4,
                bool include5,
                bool include6,
+               bool includeBracket,
                int resultValue,
                int maxValue);
+    void start(const QList<int > &values, bool includeBracket, int resultValue);
     void start(XYTreeModel *tree, int colums);
     void start(bool include, const QStringList &keys, const QStringList &all);
     void isOKGroup(const QList<int> &values);
     void calculateTwoNumbers(int a, int b, QString &text, const QList<int> &values, int index);
+    QMap<int, QString> calculateGroups(const QList<int> &values, bool outer = false);
+    bool isNumbersAddToFixedValue(int a, int b, int value, const QList<int> &values, int index);
+    void getNumbersByOrder(const QList<int> &source, QList<int> &target);
+
+    // 函数获取一个组数不同排列顺序
+    QList<QList<int> > getNumberByOrder(int maxNums);
 
 signals:
     void addString(const QString &oneResult, const QString &userData);
@@ -35,6 +43,7 @@ protected:
 
 private:
     void findResultes();
+    void findResultesWithUserValues();
     void findTreeSameColumns();
     void findKeys();
     bool findColumnSameItem(int column, const QString &data, QString &sameData);
@@ -45,10 +54,12 @@ private:
     bool include4;
     bool include5;
     bool include6;
+    bool includeBracket;
 
     int  maxValue;
     int  resultValue;
 
+    QList<int>   userValues;
     XYTreeModel *tree;
     int columns;
     int okGroupNumbers;
