@@ -23,10 +23,20 @@ public:
     void start(const QList<int > &values, bool includeBracket, int resultValue);
     void start(XYTreeModel *tree, int colums);
     void start(bool include, const QStringList &keys, const QStringList &all);
+
+    // 查找满足要求的组合
     void isOKGroup(const QList<int> &values);
+
+    // 计算一组数的结果，不包括括号，顺序计算
     void calculateTwoNumbers(int a, int b, QString &text, const QList<int> &values, int index);
+
+    // 计算一组数的结果，包括括号，首先按照括号的顺序计算
     QMap<int, QString> calculateGroups(const QList<int> &values, bool outer = false);
+
+    // 查找一组数是否相加得value的值
     bool isNumbersAddToFixedValue(int a, int b, int value, const QList<int> &values, int index);
+
+    // 获取一组数的排列组合方式
     void getNumbersByOrder(const QList<int> &source, QList<int> &target);
 
     // 函数获取一个组数不同排列顺序

@@ -75,6 +75,7 @@ void MainWindow::threadFinished()
     switch (thread->getStartType())
     {
     case XYCalculateThread::FINDRESULTS:
+    case XYCalculateThread::FINDRESULTSWITHUSER:
         ui->label_7->setText(QString("%1").arg(QStringLiteral("计算完成！")));
         break;
     case XYCalculateThread::FINDSAME:
