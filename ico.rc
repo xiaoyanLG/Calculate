@@ -1,29 +1,29 @@
 #include "winres.h"
 
-#define MAJOR 3
-#define MINOR 3
-#define PATCH 3
+#define MAJOR 1
+#define MINOR 0
+#define PATCH 0
 
-#define VERSION_STR "3.3.3.0"
+#define VERSION_STR "1.0.0.0"
 
-#define PRODUCT_ICON           "Calculate.ico" // å›¾æ ‡
+#define PRODUCT_ICON           "Calculate.ico"     // Í¼±ê
 
-#define FILE_VERSION           MAJOR,MINOR,PATCH   // æ–‡ä»¶ç‰ˆæœ¬
+#define FILE_VERSION           MAJOR,MINOR,PATCH   // ÎÄ¼ş°æ±¾
 #define FILE_VERSION_STR       VERSION_STR
-#define PRODUCT_VERSION        FILE_VERSION        // äº§å“ç‰ˆæœ¬
+#define PRODUCT_VERSION        FILE_VERSION        // ²úÆ·°æ±¾
 #define PRODUCT_VERSION_STR    FILE_VERSION_STR
 #define COMPANY_NAME           "ACOINFO"
-#define INTERNAL_NAME          "TpsFs-Explorer.exe"
-#define FILE_DESCRIPTION       "TpsFs-Explorer"  // æ–‡ä»¶è¯´æ˜
-#define LEGAL_COPYRIGHT        "Copyright(c) 2015-2017 ACOINFO(R). All rights reserved." // ç‰ˆæƒ
-#define ORIGINAL_FILE_NAME     "TpsFs-Explorer.exe"    // åŸå§‹æ–‡ä»¶å
-#define PRODUCT_NAME           "TpsFs-Explorer"        // äº§å“åç§°
-#define ORGANIZATION_DOMAIN    "www.acoinfo.com"  // åŸŸå
+#define INTERNAL_NAME          "Calculate.exe"
+#define FILE_DESCRIPTION       "Calculate"  // ÎÄ¼şËµÃ÷
+#define LEGAL_COPYRIGHT        "½ûÖ¹ÓÃÓÚÉÌÒµÓÃÍ¾(QQ 624080979)" // °æÈ¨
+#define ORIGINAL_FILE_NAME     "Calculate.exe"    // Ô­Ê¼ÎÄ¼şÃû
+#define PRODUCT_NAME           "Calculate"        // ²úÆ·Ãû³Æ
+#define ORGANIZATION_DOMAIN    "https://github.com/xiaoyanLG"  // ÓòÃû
 
-// å›¾æ ‡
+// Í¼±ê
 IDI_ICON1       ICON      PRODUCT_ICON
 
-// ç‰ˆæœ¬ä¿¡æ¯
+// °æ±¾ĞÅÏ¢
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILE_VERSION
  PRODUCTVERSION PRODUCT_VERSION
