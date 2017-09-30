@@ -185,13 +185,15 @@ void XYCalculateThread::calculateTwoNumbers(int a, int b, QString &text, const Q
     }
 }
 
-QMap<int, QString> XYCalculateThread::calculateGroups(const QList<int> &values, bool outer)
+QMap<int, QString> XYCalculateThread::calculateGroups(const QList<int> &values, bool outer, bool filter)
 {
     static QList<QString> operateStrings;
     static QList<OperateGroup> operates;
     static QStringList allResults;
+    static QList<int>  allIntResults;
     if (outer)
     {
+        allIntResults.clear();
         allResults.clear();
     }
     if (operateStrings.isEmpty())
@@ -210,15 +212,16 @@ QMap<int, QString> XYCalculateThread::calculateGroups(const QList<int> &values, 
             {
                 if (outer)
                 {
-                    if (retB== resultValue)
+                    if (retB == resultValue || !filter)
                     {
                         QString userData;
                         for (int j = 0; j < values.size(); ++j)
                         {
                             userData += QString::number(values.at(j)) + " ";
                         }
-                        if (!allResults.contains(userData))
+                        if (!allResults.contains(userData) || (!filter && !allIntResults.contains(retB)))
                         {
+                            allIntResults.append(retB);
                             allResults.append(userData);
                             QString validResult = QString("%1 %2 %3 %4 %5").arg(values.at(0))
                                     .arg(operateStrings.at(i))
@@ -321,19 +324,24 @@ QMap<int, QString> XYCalculateThread::calculateGroups(const QList<int> &values, 
                     if (outer)
                     {
                         auto it = lastValues.find(resultValue);
+                        if (!filter)
+                        {
+                            it = lastValues.begin();
+                        }
                         while (it != lastValues.end())
                         {
                             int res = it.key();
                             QString text = it.value();
-                            if (res == resultValue)
+                            if (res == resultValue || !filter)
                             {
                                 QString userData;
                                 for (int k = 0; k < values.size(); ++k)
                                 {
                                     userData += QString::number(values.at(k)) + " ";
                                 }
-                                if (!allResults.contains(userData))
+                                if (!allResults.contains(userData) || (!filter && !allIntResults.contains(res)))
                                 {
+                                    allIntResults.append(res);
                                     allResults.append(userData);
                                     QString validResult = QString("%1 %2 %3").arg(text)
                                             .arg("=")
@@ -525,9 +533,7 @@ void XYCalculateThread::findResultes()
 
 void XYCalculateThread::findResultesWithUserValues()
 {
-    QList<int > target;
-    getNumbersByOrder(userValues, target);
-
+    calculateGroups(userValues, true, false);
     emit updateTree();
 }
 

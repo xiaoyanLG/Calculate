@@ -24,6 +24,7 @@ public slots:
     void setColumnWidth();
     void updateListView(QStringList datas, bool all);
     void threadFinished();
+    void sortColumn(int column, Qt::SortOrder order);
 
 private slots:
     void on_pushButton_clicked();

@@ -25,7 +25,14 @@
        </widget>
       </item>
       <item row="3" column="0" colspan="14">
-       <widget class="QTreeView" name="treeView"/>
+       <widget class="QTreeView" name="treeView">
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <attribute name="headerShowSortIndicator" stdset="0">
+         <bool>true</bool>
+        </attribute>
+       </widget>
       </item>
       <item row="6" column="11">
        <widget class="QLineEdit" name="lineEdit_3"/>

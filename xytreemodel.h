@@ -18,6 +18,7 @@ public:
     void clear();
     QMap<int, QStringList> &getUserDatas();
     QStringList &getColumnDatas(int column);
+    void setColumnDatas(int column, const QStringList &datas);
     QStringList &getColumnUserDatas(int column);
     int addColumn(const QString &headerText, const QStringList &alldata, const QStringList &allUserdata);
     void appendColumnData(int column, const QString &data, const QString &userData);

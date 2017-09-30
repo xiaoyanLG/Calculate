@@ -43,6 +43,11 @@ QStringList &XYTreeModel::getColumnDatas(int column)
     return mmapAllData[column];
 }
 
+void XYTreeModel::setColumnDatas(int column, const QStringList &datas)
+{
+    mmapAllData[column] = datas;
+}
+
 QStringList &XYTreeModel::getColumnUserDatas(int column)
 {
     static QStringList err;

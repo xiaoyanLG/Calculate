@@ -31,7 +31,7 @@ public:
     void calculateTwoNumbers(int a, int b, QString &text, const QList<int> &values, int index);
 
     // 计算一组数的结果，包括括号，首先按照括号的顺序计算
-    QMap<int, QString> calculateGroups(const QList<int> &values, bool outer = false);
+    QMap<int, QString> calculateGroups(const QList<int> &values, bool outer = false, bool filter = true);
 
     // 查找一组数是否相加得value的值
     bool isNumbersAddToFixedValue(int a, int b, int value, const QList<int> &values, int index);

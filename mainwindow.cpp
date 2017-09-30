@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(thread, SIGNAL(updateTree()), this, SLOT(setColumnWidth()));
     connect(thread, SIGNAL(finished()), this, SLOT(threadFinished()));
     connect(ui->treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(showTreeCurrentRow(QModelIndex)));
+    connect(ui->treeView->header(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortColumn(int,Qt::SortOrder)));
     connect(ui->listView, SIGNAL(clicked(QModelIndex)), this, SLOT(showListCurrentRow(QModelIndex)));
     ui->treeView->setModel(new XYTreeModel);
     listModel = new QStringListModel;
@@ -87,6 +88,34 @@ void MainWindow::threadFinished()
     default:
         break;
     }
+}
+
+void MainWindow::sortColumn(int column, Qt::SortOrder order)
+{
+    QStringList allDatas = XYTreeModel::getInstance()->getColumnDatas(column);
+    QMap<int, QString> sortedDatas;
+    for (int i = 0; i < allDatas.size(); ++i)
+    {
+        QString data = allDatas.at(i);
+        data = data.mid(data.lastIndexOf("=") + 1).trimmed();
+        sortedDatas.insert(data.toInt(), allDatas.at(i));
+    }
+
+    if (order == Qt::AscendingOrder)
+    {
+        XYTreeModel::getInstance()->setColumnDatas(column, sortedDatas.values());
+    }
+    else
+    {
+        allDatas = sortedDatas.values();
+        QStringList tmps;
+        for (int i = 0; i < allDatas.size(); ++i)
+        {
+            tmps.prepend(allDatas.at(i));
+        }
+        XYTreeModel::getInstance()->setColumnDatas(column, tmps);
+    }
+    ui->treeView->reset();
 }
 
 void MainWindow::on_pushButton_clicked()
